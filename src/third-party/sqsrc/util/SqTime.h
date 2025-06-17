@@ -25,6 +25,9 @@ SOFTWARE.
 #pragma once
 
 #include <assert.h>
+#ifdef METAMODULE
+#include <chrono>
+#endif
 /**
  * @class SqTime
  * A simple high-res timer. Returns current seconds
@@ -70,10 +73,14 @@ public:
     static double seconds()
     {
         struct timespec ts;
+        #ifndef METAMODULE
         int x = clock_gettime (CLOCK_THREAD_CPUTIME_ID, &ts);
         assert (x == 0);
         (void) x;
-
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        return double (now) / 1000000000.0;
+        #endif
         // seconds = sec + nsec / 10**9
         return double (ts.tv_sec) + double (ts.tv_nsec) / (1000.0 * 1000.0 * 1000.0);
     }

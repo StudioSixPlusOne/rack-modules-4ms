@@ -29,6 +29,9 @@
 #include <memory>
 #include <vector>
 //#include <time.h>
+#ifdef METAMODULE
+#include <chrono>
+#endif
 
 #include "jansson.h"
 
@@ -103,7 +106,12 @@ public:
             f.setAux (0.5f);
         }
 
+        #ifndef METAMODULE
         sspo::AudioMath::defaultGenerator.seed (time (NULL));
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        sspo::AudioMath::defaultGenerator.seed(static_cast<unsigned int>(now));
+        #endif
         divider.setDivisor (1);
 
         dcOutFilters.resize (SIMD_MAX_CHANNELS);

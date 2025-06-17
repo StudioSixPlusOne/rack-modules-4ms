@@ -27,7 +27,11 @@
 #include "ctrl/SqMenuItem.h"
 #include "app/MidiDisplay.hpp"
 
+#ifndef METAMODULE
+#include <cstdio>
+#else
 #include <sstream>
+#endif
 
 namespace sspo
 {
@@ -66,15 +70,19 @@ namespace sspo
                 msg.setStatus (0xb);
                 msg.setNote (cc);
                 msg.setValue (val);
+                #ifndef METAMODULE
                 try
                 {
+                #endif
                     sendMessage (msg);
+                #ifndef METAMODULE
                 }
                 catch (const std::exception& e)
                 {
                     DEBUG ("Iverson %s", e.what());
                     DEBUG ("%d", this->channel);
                 }
+                #endif
             }
 
             void resetNote (int note)
@@ -83,15 +91,19 @@ namespace sspo
                 msg.setStatus (0x9);
                 msg.setNote (note);
                 msg.setValue (0);
+                #ifndef METAMODULE
                 try
                 {
+                #endif
                     sendMessage (msg);
                     currentNotes[note] = false;
+                #ifndef METAMODULE
                 }
                 catch (const std::exception& e)
                 {
                     DEBUG ("Iverson reset note %s", e.what());
                 }
+                #endif
             }
 
             void setNote (int note, int velocity)
@@ -103,14 +115,18 @@ namespace sspo
                     msg.setStatus (0x9);
                     msg.setNote (note);
                     msg.setValue (velocity);
+                    #ifndef METAMODULE
                     try
                     {
+                    #endif
                         sendMessage (msg);
+                    #ifndef METAMODULE
                     }
                     catch (const std::exception& e)
                     {
                         DEBUG ("Iverson setNote %s", e.what());
                     }
+                    #endif
                 }
                 else if (velocity == -1)
                 {
@@ -119,14 +135,18 @@ namespace sspo
                     msg.setStatus (0x9);
                     msg.setNote (note);
                     msg.setValue (0);
+                    #ifndef METAMODULE
                     try
                     {
+                    #endif
                         sendMessage (msg);
+                    #ifndef METAMODULE
                     }
                     catch (const std::exception& e)
                     {
                         DEBUG ("Iverson setNote -1 %s", e.what());
                     }
+                    #endif
                 }
                 currentNotes[note] = velocity;
             }
@@ -521,9 +541,14 @@ namespace sspo
         if (mapping == midiMappings.end())
             return "";
 
+        #ifndef METAMODULE
         std::stringstream ss;
         ss << mapping->controller << ":" << mapping->note;
         return ss.str();
+        #else
+        char buffer[32];
+        return std::string(buffer);
+        #endif
     }
 
     void IversonBase::onReset()

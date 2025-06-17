@@ -29,7 +29,9 @@
 #include <memory>
 #include <time.h>
 #include "dsp/digital.hpp"
-
+#ifdef METAMODULE
+#include <chrono>
+#endif
 using namespace sspo::AudioMath;
 
 #include <bitset>
@@ -157,7 +159,12 @@ public:
     // must be called after setSampleRate
     void init()
     {
+        #ifndef METAMODULE
         defaultGenerator.seed (time (nullptr));
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        defaultGenerator.seed(static_cast<unsigned int>(now));
+        #endif
 
         channelData.resize (maxChannels);
         for (auto& cd : channelData)

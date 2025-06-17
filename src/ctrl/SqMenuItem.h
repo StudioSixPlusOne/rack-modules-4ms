@@ -35,7 +35,7 @@ SOFTWARE.
  **/
 struct SqMenuItem : ::rack::MenuItem
 {
-    void onAction (const ::rack::event::Action& e) override
+    void onAction (const ::widget::Widget::ActionEvent& e) override
     {
         _onActionFn();
     }
@@ -59,7 +59,7 @@ private:
 
 struct SqMenuItemAccel : ::rack::MenuItem
 {
-    void onAction (const ::rack::event::Action& e) override
+    void onAction (const ::widget::Widget::ActionEvent& e) override
     {
         _onActionFn();
     }

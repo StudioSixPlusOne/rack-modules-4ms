@@ -35,25 +35,41 @@ extern int _mdb; // MIDI reverence count
  *
  * Will print information on failure, then generate a "real" assertion
  */
-
+#ifndef METAMODULE
 #define assertEQEx(actual, expected, msg)                                                                               \
     if (actual != expected)                                                                                             \
     {                                                                                                                   \
         std::cout << "assertEq failed " << msg << " actual value =" << actual << " expected=" << expected << std::endl; \
         assert (false);                                                                                                 \
     }
+#else
+#define assertEQEx(actual, expected, msg) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 #define assertEQ(actual, expected) assertEQEx (actual, expected, "")
+#else
+#define assertEQ(actual, expected) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 #define assertNEEx(actual, expected, msg)                                                                                   \
     if (actual == expected)                                                                                                 \
     {                                                                                                                       \
         std::cout << "assertNE failed " << msg << " did not expect " << actual << " to be == to " << expected << std::endl; \
         assert (false);                                                                                                     \
     }
+#else
+#define assertNEEx(actual, expected, msg) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 #define assertNE(actual, expected) assertNEEx (actual, expected, "")
+#else
+#define assertNE(actual, expected) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 #define assertClose(actual, expected, diff)                                                                 \
     if (! sspo::AudioMath::areSame (actual, expected, diff))                                                \
     {                                                                                                       \
@@ -61,7 +77,11 @@ extern int _mdb; // MIDI reverence count
                   << std::flush;                                                                            \
         assert (false);                                                                                     \
     }
+#else
+#define assertClose(actual, expected, diff) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 // assert less than
 #define assertLT(actual, expected)                                                         \
     if (actual >= expected)                                                                \
@@ -69,7 +89,11 @@ extern int _mdb; // MIDI reverence count
         std::cout << "assertLt " << expected << " actual value = " << actual << std::endl; \
         assert (false);                                                                    \
     }
+#else
+#define assertLT(actual, expected) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 // assert less than or equal to
 #define assertLE(actual, expected)                                                         \
     if (actual > expected)                                                                 \
@@ -77,7 +101,11 @@ extern int _mdb; // MIDI reverence count
         std::cout << "assertLE " << expected << " actual value = " << actual << std::endl; \
         assert (false);                                                                    \
     }
+#else
+#define assertLE(actual, expected) ((void) 0)
+#endif
 
+#ifndef METAMODULE
 // assert greater than
 #define assertGT(actual, expected)                                                         \
     if (actual <= expected)                                                                \
@@ -85,13 +113,20 @@ extern int _mdb; // MIDI reverence count
         std::cout << "assertGT " << expected << " actual value = " << actual << std::endl; \
         assert (false);                                                                    \
     }
-// assert greater than or equal to
+#else
+#define assertGT(actual, expected) ((void) 0)
+#endif
+
+#ifndef METAMODULE
 #define assertGE(actual, expected)                                                         \
     if (actual < expected)                                                                 \
     {                                                                                      \
         std::cout << "assertGE " << expected << " actual value = " << actual << std::endl; \
         assert (false);                                                                    \
     }
+#else
+#define assertGE(actual, expected) ((void) 0)
+#endif
 
 #ifndef NDEBUG
 #define assertEvCount(x) assertEQ (MidiEvent::_count, x)

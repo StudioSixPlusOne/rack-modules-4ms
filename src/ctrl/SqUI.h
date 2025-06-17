@@ -29,10 +29,10 @@ SOFTWARE.
 namespace sq
 {
 
-    using EventAction = ::rack::event::Action;
-    using EventChange = ::rack::event::Change;
+    using EventAction = ::widget::Widget::ActionEvent;
+    using EventChange = ::widget::Widget::ChangeEvent;
 
-    inline void consumeEvent (const ::rack::event::Base* evt, ::rack::Widget* widget)
+    inline void consumeEvent (const ::widget::BaseEvent* evt, ::rack::Widget* widget)
     {
         evt->consume (widget);
     }

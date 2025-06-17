@@ -26,7 +26,9 @@
 #include "../dsp/WaveShaper.h"
 #include <memory>
 #include <vector>
-
+#ifdef METAMODULE
+#include <chrono>
+#endif
 #include "jansson.h"
 
 using float_4 = ::rack::simd::float_4;
@@ -97,7 +99,12 @@ public:
         //resize arrays
         //initialise dsp object
 
+        #ifndef METAMODULE
         sspo::AudioMath::defaultGenerator.seed (time (NULL));
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        sspo::AudioMath::defaultGenerator.seed(static_cast<unsigned int>(now));
+        #endif
         dcOutFilters.resize (SIMD_MAX_CHANNELS);
         divider.setDivisor (divisorRate);
         upsampler.setQuality (upSampleQuality);

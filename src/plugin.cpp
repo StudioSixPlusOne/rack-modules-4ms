@@ -10,7 +10,7 @@ void init (::rack::Plugin* p)
     p->addModel (modelKSDelay);
     p->addModel (modelMaccomo);
     p->addModel (modelPolyShiftRegister);
-    p->addModel (modelTe);
+    // p->addModel (modelTe);
     p->addModel (modelCombFilter);
     p->addModel (modelLaLa);
     p->addModel (modelEva);
@@ -21,7 +21,7 @@ void init (::rack::Plugin* p)
     p->addModel (modelHula);
     p->addModel (modelAmburgh);
     p->addModel (modelBascom);
-    p->addModel (modelBascomExpander);
+    // p->addModel (modelBascomExpander);
     p->addModel (modelMix);
     p->addModel (modelBose);
     p->addModel (modelDuffy);

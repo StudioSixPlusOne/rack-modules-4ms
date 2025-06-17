@@ -28,6 +28,9 @@
 #include <vector>
 #include <array>
 #include "Adsr.h"
+#ifdef METAMODULE
+#include <chrono>
+#endif
 
 #include "jansson.h"
 
@@ -98,8 +101,13 @@ public:
     {
         //resize arrays
         //initialise dsp object
-
+        
+        #ifndef METAMODULE
         sspo::AudioMath::defaultGenerator.seed (time (NULL));
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        sspo::AudioMath::defaultGenerator.seed(static_cast<unsigned int>(now));
+        #endif
         for (auto& d : dividers)
             d.setDivisor (divisorRate);
         upsamplerL.setQuality (upSampleQuality);

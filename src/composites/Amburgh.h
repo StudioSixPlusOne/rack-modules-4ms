@@ -28,7 +28,9 @@
 #include <memory>
 #include <vector>
 #include <time.h>
-
+#ifdef METAMODULE
+#include <chrono>
+#endif
 using float_4 = ::rack::simd::float_4;
 
 namespace rack
@@ -104,7 +106,12 @@ public:
             }; //end of lambda
         }
 
+        #ifndef METAMODULE
         sspo::AudioMath::defaultGenerator.seed (time (NULL));
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        sspo::AudioMath::defaultGenerator.seed(static_cast<unsigned int>(now));
+        #endif
     }
 
     enum ParamIds

@@ -28,7 +28,9 @@
 #include "AudioMath.h"
 #include "common.hpp"
 #include "math.hpp"
-
+#ifdef METAMODULE
+#include <chrono>
+#endif
 using namespace sspo::AudioMath;
 
 namespace sspo
@@ -161,7 +163,12 @@ namespace sspo
     TriggerSequencer<MAX_LENGTH>::TriggerSequencer()
     {
         reset();
+        #ifndef METAMODULE
         defaultGenerator.seed (time (0));
+        #else
+        auto now = std::chrono::system_clock::now().time_since_epoch().count();
+        defaultGenerator.seed(static_cast<unsigned int>(now));
+        #endif
     }
 
     template <int MAX_LENGTH>
